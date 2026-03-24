@@ -1,0 +1,64 @@
+name: Generar images.json automáticamente
+
+on:
+  push:
+    paths:
+      - 'images/**'               # Se ejecuta cuando se suben archivos a la carpeta images
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write             # Permite hacer commit y push
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar jq (formateador JSON)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Generar images.json
+        run: |
+          echo "[" > images.json
+          first=true
+          # Busca imágenes en la carpeta images (formatos comunes)
+          for img in images/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}; do
+            if [ -f "$img" ]; then
+              if [ "$first" = true ]; then
+                first=false
+              else
+                echo "," >> images.json
+              fi
+              # Extrae el nombre del archivo sin extensión
+              filename=$(basename "$img")
+              name="${filename%.*}"
+              # Reemplaza guiones bajos por espacios para el título
+              title=$(echo "$name" | sed 's/_/ /g')
+              # Detecta género por palabras clave en el nombre
+              if echo "$filename" | grep -qi "dama\|mujer\|femenino\|lady\|girl"; then
+                gender="mujer"
+              else
+                gender="hombre"
+              fi
+              # Escribe el objeto JSON
+              cat >> images.json <<EOF
+              {
+                "name": "$title",
+                "gender": "$gender",
+                "imageDataURL": "$img",
+                "description": ""
+              }
+EOF
+            fi
+          done
+          echo "]" >> images.json
+          # Formatea el JSON para que sea legible
+          jq '.' images.json > images.tmp && mv images.tmp images.json
+
+      - name: Commit y push del archivo generado
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add images.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Actualizar images.json automáticamente"
+          git push
