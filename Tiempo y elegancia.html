@@ -7,12 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* Estilos iguales a la versión anterior, con ajustes menores para el modal de contraseña */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: radial-gradient(circle at 10% 30%, #2b2b28, #1e1e1c);
@@ -32,8 +28,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
-        /* Header */
         .header {
             background: rgba(10, 12, 18, 0.75);
             backdrop-filter: blur(12px);
@@ -68,13 +62,7 @@
             0% { background-position: 0% center; }
             100% { background-position: 200% center; }
         }
-        .logo p {
-            font-size: 0.7rem;
-            color: #d4c9a3;
-            letter-spacing: 1px;
-        }
-
-        /* Reloj análogo */
+        .logo p { font-size: 0.7rem; color: #d4c9a3; letter-spacing: 1px; }
         .live-clock {
             display: flex;
             align-items: center;
@@ -85,13 +73,7 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(212,175,55,0.3);
         }
-        .clock-canvas {
-            width: 60px;
-            height: 60px;
-            background: #fef3da;
-            border-radius: 50%;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
-        }
+        .clock-canvas { width: 60px; height: 60px; background: #fef3da; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
         .digital-time {
             font-family: monospace;
             font-size: 1.2rem;
@@ -101,7 +83,6 @@
             padding: 0.2rem 0.8rem;
             border-radius: 40px;
         }
-
         .admin-toggle {
             background: rgba(30,30,28,0.8);
             border: 1px solid #d4af37;
@@ -118,7 +99,6 @@
             color: #1e1e1c;
             box-shadow: 0 0 10px rgba(212,175,55,0.5);
         }
-
         /* Panel admin */
         .admin-panel {
             max-width: 1400px;
@@ -128,14 +108,8 @@
             position: relative;
             z-index: 5;
         }
-        .admin-panel.active {
-            display: block;
-            animation: fadeSlide 0.4s ease-out;
-        }
-        @keyframes fadeSlide {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .admin-panel.active { display: block; animation: fadeSlide 0.4s ease-out; }
+        @keyframes fadeSlide { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         .admin-card {
             background: rgba(30, 30, 28, 0.85);
             backdrop-filter: blur(16px);
@@ -144,20 +118,9 @@
             border: 1px solid rgba(212,175,55,0.3);
             margin-bottom: 2rem;
         }
-        .admin-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.2rem;
-            color: #d4af37;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            color: #f0ede8;
-            font-weight: 500;
-            margin-bottom: 0.3rem;
-            display: block;
-        }
+        .admin-card h3 { font-size: 1.5rem; margin-bottom: 1.2rem; color: #d4af37; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { color: #f0ede8; font-weight: 500; margin-bottom: 0.3rem; display: block; }
         .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 0.7rem 1rem;
@@ -167,13 +130,7 @@
             color: #f5f0e6;
             font-family: inherit;
         }
-        .image-preview {
-            margin-top: 0.5rem;
-            max-width: 100px;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid #d4af37;
-        }
+        .image-preview { margin-top: 0.5rem; max-width: 100px; border-radius: 16px; overflow: hidden; border: 1px solid #d4af37; }
         .btn-submit {
             background: #d4af37;
             border: none;
@@ -183,21 +140,10 @@
             cursor: pointer;
             color: #1e1e1c;
         }
-        .btn-submit:hover {
-            background: #f5cb5c;
-        }
-
+        .btn-submit:hover { background: #f5cb5c; }
         /* Catálogo */
-        .catalog {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 5;
-        }
-        .category-section {
-            margin-bottom: 3rem;
-        }
+        .catalog { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; position: relative; z-index: 5; }
+        .category-section { margin-bottom: 3rem; }
         .category-header {
             display: flex;
             align-items: baseline;
@@ -206,18 +152,8 @@
             border-left: 4px solid #d4af37;
             padding-left: 1rem;
         }
-        .category-header h2 {
-            font-size: 1.8rem;
-            font-family: 'Playfair Display', serif;
-            color: #f0ede8;
-        }
-        .category-header .count {
-            font-size: 0.9rem;
-            color: #d4af37;
-            background: rgba(0,0,0,0.3);
-            padding: 0.2rem 0.7rem;
-            border-radius: 30px;
-        }
+        .category-header h2 { font-size: 1.8rem; font-family: 'Playfair Display', serif; color: #f0ede8; }
+        .category-header .count { font-size: 0.9rem; color: #d4af37; background: rgba(0,0,0,0.3); padding: 0.2rem 0.7rem; border-radius: 30px; }
         .gold-line {
             width: 80px;
             height: 3px;
@@ -225,34 +161,12 @@
             margin: 0.5rem auto 1rem;
             animation: pulse 2s infinite;
         }
-        @keyframes pulse {
-            0% { opacity: 0.6; width: 80px; }
-            50% { opacity: 1; width: 100px; }
-            100% { opacity: 0.6; width: 80px; }
-        }
-        .watches-scroll {
-            overflow-x: auto;
-            overflow-y: visible;
-            padding-bottom: 1rem;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-        }
-        .watches-scroll::-webkit-scrollbar {
-            height: 8px;
-        }
-        .watches-scroll::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-        }
-        .watches-scroll::-webkit-scrollbar-thumb {
-            background: #d4af37;
-            border-radius: 10px;
-        }
-        .watches-row {
-            display: flex;
-            gap: 1.5rem;
-            padding: 0.5rem 0.2rem;
-        }
+        @keyframes pulse { 0% { opacity: 0.6; width: 80px; } 50% { opacity: 1; width: 100px; } 100% { opacity: 0.6; width: 80px; } }
+        .watches-scroll { overflow-x: auto; overflow-y: visible; padding-bottom: 1rem; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+        .watches-scroll::-webkit-scrollbar { height: 8px; }
+        .watches-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px; }
+        .watches-scroll::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+        .watches-row { display: flex; gap: 1.5rem; padding: 0.5rem 0.2rem; }
         .watch-card {
             flex: 0 0 auto;
             width: 280px;
@@ -264,11 +178,7 @@
             cursor: pointer;
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
-        .watch-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.4);
-            border-color: #d4af37;
-        }
+        .watch-card:hover { transform: translateY(-8px); box-shadow: 0 25px 35px -12px rgba(0,0,0,0.4); border-color: #d4af37; }
         .watch-img {
             background: rgba(0,0,0,0.3);
             height: 240px;
@@ -278,12 +188,7 @@
             padding: 1rem;
             position: relative;
         }
-        .watch-img img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-        }
+        .watch-img img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
         .error-img-placeholder {
             width: 100%;
             height: 100%;
@@ -297,20 +202,9 @@
             cursor: pointer;
             font-size: 0.8rem;
         }
-        .error-img-placeholder i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        .watch-info {
-            padding: 1.2rem;
-            text-align: center;
-        }
-        .watch-name {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: #f0ede8;
-            margin-bottom: 0.5rem;
-        }
+        .error-img-placeholder i { font-size: 2rem; margin-bottom: 0.5rem; }
+        .watch-info { padding: 1.2rem; text-align: center; }
+        .watch-name { font-weight: 700; font-size: 1.2rem; color: #f0ede8; margin-bottom: 0.5rem; }
         .btn-detail {
             background: transparent;
             border: 1px solid #d4af37;
@@ -320,10 +214,7 @@
             cursor: pointer;
             color: #d4af37;
         }
-        .btn-detail:hover {
-            background: #d4af37;
-            color: #1e1e1c;
-        }
+        .btn-detail:hover { background: #d4af37; color: #1e1e1c; }
         .delete-watch {
             background: #7f2a2a;
             border: none;
@@ -334,16 +225,8 @@
             margin-top: 0.5rem;
             cursor: pointer;
         }
-        .empty-category {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(0,0,0,0.3);
-            border-radius: 28px;
-            color: #b9b5a8;
-            width: 100%;
-        }
-
-        /* Modal para imagen rota */
+        .empty-category { text-align: center; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 28px; color: #b9b5a8; width: 100%; }
+        /* Modales */
         .modal {
             display: none;
             position: fixed;
@@ -357,9 +240,7 @@
             justify-content: center;
             align-items: center;
         }
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
         .modal-content {
             background: #262624;
             max-width: 500px;
@@ -371,47 +252,13 @@
             padding: 2rem;
             text-align: center;
         }
-        .modal-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #d4af37;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        .modal-btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 40px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .modal-btn.upload {
-            background: #d4af37;
-            color: #1e1e1c;
-        }
-        .modal-btn.delete {
-            background: #7f2a2a;
-            color: white;
-        }
-        .modal-btn.cancel {
-            background: #4a4a46;
-            color: white;
-        }
-        .close-modal {
-            position: absolute;
-            top: 12px;
-            right: 20px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #d4af37;
-        }
-
-        /* Modal de detalles (para imágenes normales) */
+        .modal-content h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #d4af37; }
+        .modal-buttons { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+        .modal-btn { padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .modal-btn.upload { background: #d4af37; color: #1e1e1c; }
+        .modal-btn.delete { background: #7f2a2a; color: white; }
+        .modal-btn.cancel { background: #4a4a46; color: white; }
+        .close-modal { position: absolute; top: 12px; right: 20px; font-size: 1.8rem; cursor: pointer; color: #d4af37; }
         .modal-detail {
             background: #262624;
             max-width: 800px;
@@ -423,48 +270,16 @@
             position: relative;
             border: 1px solid #d4af37;
         }
-        .modal-img {
-            flex: 1;
-            background: #1a1a18;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .modal-img img {
-            max-width: 100%;
-            max-height: 300px;
-            object-fit: contain;
-        }
-        .modal-info {
-            flex: 1;
-            padding: 2rem;
-            color: #f0ede8;
-        }
-        .modal-info h3 {
-            font-size: 1.8rem;
-            font-family: 'Playfair Display', serif;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: #b9b5a8;
-            font-size: 0.8rem;
-            border-top: 1px solid rgba(212,175,55,0.2);
-            margin-top: 3rem;
-            background: rgba(0,0,0,0.3);
-        }
-        .creator {
-            font-family: 'Playfair Display', serif;
-            font-size: 0.85rem;
-            color: #d4af37;
-            margin-top: 0.5rem;
-        }
-        @media (max-width: 700px) {
-            .modal-detail { flex-direction: column; }
-            .watch-card { width: 260px; }
-        }
+        .modal-img { flex: 1; background: #1a1a18; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .modal-img img { max-width: 100%; max-height: 300px; object-fit: contain; }
+        .modal-info { flex: 1; padding: 2rem; color: #f0ede8; }
+        .modal-info h3 { font-size: 1.8rem; font-family: 'Playfair Display', serif; }
+        footer { text-align: center; padding: 2rem; color: #b9b5a8; font-size: 0.8rem; border-top: 1px solid rgba(212,175,55,0.2); margin-top: 3rem; background: rgba(0,0,0,0.3); }
+        .creator { font-family: 'Playfair Display', serif; font-size: 0.85rem; color: #d4af37; margin-top: 0.5rem; }
+        @media (max-width: 700px) { .modal-detail { flex-direction: column; } .watch-card { width: 260px; } }
+        /* Modal contraseña */
+        .password-input { width: 100%; padding: 0.7rem; margin: 1rem 0; border-radius: 40px; border: 1px solid #d4af37; background: #2a2a28; color: white; text-align: center; font-size: 1.2rem; }
+        .password-error { color: #ff8888; margin-top: 0.5rem; font-size: 0.8rem; }
     </style>
 </head>
 <body>
@@ -483,7 +298,7 @@
     </div>
 </header>
 
-<!-- Panel de administración -->
+<!-- Panel de administración (protegido) -->
 <div class="admin-panel" id="adminPanel">
     <div class="admin-card">
         <h3><i class="fas fa-upload"></i> Subir nuevo reloj</h3>
@@ -524,25 +339,13 @@
         <div class="gold-line"></div>
         <p>Desliza lateralmente para ver todos los modelos</p>
     </div>
-    
     <div class="category-section" id="menSection">
-        <div class="category-header">
-            <h2><i class="fas fa-mars"></i> Relojes para Hombre</h2>
-            <span class="count" id="menCount">0</span>
-        </div>
-        <div class="watches-scroll">
-            <div id="menGrid" class="watches-row"></div>
-        </div>
+        <div class="category-header"><h2><i class="fas fa-mars"></i> Relojes para Hombre</h2><span class="count" id="menCount">0</span></div>
+        <div class="watches-scroll"><div id="menGrid" class="watches-row"></div></div>
     </div>
-
     <div class="category-section" id="womenSection">
-        <div class="category-header">
-            <h2><i class="fas fa-venus"></i> Relojes para Dama</h2>
-            <span class="count" id="womenCount">0</span>
-        </div>
-        <div class="watches-scroll">
-            <div id="womenGrid" class="watches-row"></div>
-        </div>
+        <div class="category-header"><h2><i class="fas fa-venus"></i> Relojes para Dama</h2><span class="count" id="womenCount">0</span></div>
+        <div class="watches-scroll"><div id="womenGrid" class="watches-row"></div></div>
     </div>
 </section>
 
@@ -551,21 +354,16 @@
     <div class="creator">✧ Creador: Rafael Santo Escoria ✧</div>
 </footer>
 
-<!-- Modal para detalles de reloj (funcionamiento normal) -->
+<!-- Modal de detalles -->
 <div id="detailModal" class="modal">
     <div class="modal-detail">
         <span class="close-modal" id="closeDetailModal">&times;</span>
-        <div class="modal-img">
-            <img id="modalImg" src="" alt="Reloj">
-        </div>
-        <div class="modal-info">
-            <h3 id="modalName"></h3>
-            <p id="modalDesc"></p>
-        </div>
+        <div class="modal-img"><img id="modalImg" src="" alt="Reloj"></div>
+        <div class="modal-info"><h3 id="modalName"></h3><p id="modalDesc"></p></div>
     </div>
 </div>
 
-<!-- Modal para gestionar imagen rota -->
+<!-- Modal para gestionar imagen rota (protegido) -->
 <div id="brokenImageModal" class="modal">
     <div class="modal-content">
         <span class="close-modal" id="closeBrokenModal">&times;</span>
@@ -580,17 +378,80 @@
     </div>
 </div>
 
+<!-- Modal de autenticación -->
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <h3><i class="fas fa-lock"></i> Acceso restringido</h3>
+        <p>Ingresa la contraseña para modificar el catálogo</p>
+        <input type="password" id="authPassword" class="password-input" placeholder="Contraseña" autocomplete="off">
+        <div id="authError" class="password-error"></div>
+        <div class="modal-buttons">
+            <button class="modal-btn upload" id="authSubmitBtn">Acceder</button>
+            <button class="modal-btn cancel" id="authCancelBtn">Cancelar</button>
+        </div>
+    </div>
+</div>
+
 <script>
+    // ---------- CONTRASEÑA ----------
+    const ADMIN_PASSWORD = "2024";
+    let isAuthenticated = false;
+
+    // Elementos de autenticación
+    const authModal = document.getElementById('authModal');
+    const authPasswordInput = document.getElementById('authPassword');
+    const authErrorSpan = document.getElementById('authError');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const authCancelBtn = document.getElementById('authCancelBtn');
+
+    // Variables para recordar la acción pendiente
+    let pendingAction = null; // 'toggleAdmin', 'repairWatch', etc.
+    let pendingRepairWatch = null;
+
+    // Función para solicitar contraseña
+    function requestAuth(action, callback, watch = null) {
+        pendingAction = action;
+        if (watch) pendingRepairWatch = watch;
+        authPasswordInput.value = '';
+        authErrorSpan.innerText = '';
+        authModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        // Guardar callback temporalmente
+        window.authCallback = callback;
+    }
+
+    function closeAuthModal() {
+        authModal.classList.remove('active');
+        document.body.style.overflow = '';
+        pendingAction = null;
+        pendingRepairWatch = null;
+    }
+
+    function checkPassword() {
+        const password = authPasswordInput.value;
+        if (password === ADMIN_PASSWORD) {
+            isAuthenticated = true;
+            closeAuthModal();
+            if (window.authCallback) {
+                window.authCallback();
+                window.authCallback = null;
+            }
+        } else {
+            authErrorSpan.innerText = 'Contraseña incorrecta. Intenta nuevamente.';
+        }
+    }
+
+    authSubmitBtn.addEventListener('click', checkPassword);
+    authCancelBtn.addEventListener('click', closeAuthModal);
+    authPasswordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
+
     // ---------- RELOJ ANÁLOGO ----------
     const clockCanvas = document.getElementById('analogClockCanvas');
     const clockCtx = clockCanvas.getContext('2d');
     const digitalSpan = document.getElementById('digitalClock');
-
     function drawAnalogClock() {
         const now = new Date();
-        const hours = now.getHours() % 12;
-        const minutes = now.getMinutes();
-        const seconds = now.getSeconds();
+        const hours = now.getHours() % 12, minutes = now.getMinutes(), seconds = now.getSeconds();
         const size = 60, centerX = 30, centerY = 30, radius = 27;
         clockCtx.clearRect(0, 0, size, size);
         clockCtx.beginPath();
@@ -645,39 +506,33 @@
 
     // ---------- GESTIÓN DE RELOJES ----------
     let watches = [];
-
-    // Elementos DOM
     const menGrid = document.getElementById('menGrid');
     const womenGrid = document.getElementById('womenGrid');
     const menCountSpan = document.getElementById('menCount');
     const womenCountSpan = document.getElementById('womenCount');
-    const adminPanel = document.getElementById('adminPanel');
+    const adminPanelDiv = document.getElementById('adminPanel');
     const adminToggleBtn = document.getElementById('adminToggleBtn');
     const uploadForm = document.getElementById('uploadWatchForm');
     const watchImageInput = document.getElementById('watchImage');
     const imagePreview = document.getElementById('imagePreview');
-    const detailModal = document.getElementById('detailModal');
-    const brokenModal = document.getElementById('brokenImageModal');
-    const closeDetailModal = document.getElementById('closeDetailModal');
-    const closeBrokenModal = document.getElementById('closeBrokenModal');
+    const detailModalDiv = document.getElementById('detailModal');
+    const brokenModalDiv = document.getElementById('brokenImageModal');
+    const closeDetailModalSpan = document.getElementById('closeDetailModal');
+    const closeBrokenModalSpan = document.getElementById('closeBrokenModal');
     const brokenUploadBtn = document.getElementById('brokenUploadBtn');
     const brokenDeleteBtn = document.getElementById('brokenDeleteBtn');
     const brokenCancelBtn = document.getElementById('brokenCancelBtn');
     const brokenImageFile = document.getElementById('brokenImageFile');
     const brokenWatchNameSpan = document.getElementById('brokenWatchName');
+    let currentBrokenWatch = null;
 
-    let currentBrokenWatch = null; // guarda el reloj que tiene la imagen rota
-
-    // Cargar datos de localStorage o inicializar con ejemplo
+    // Cargar datos
     function loadWatchesFromStorage() {
         const stored = localStorage.getItem('tiempo_y_elegancia_watches_v3');
         if(stored) {
-            try {
-                watches = JSON.parse(stored);
-            } catch(e) { watches = []; }
+            try { watches = JSON.parse(stored); } catch(e) { watches = []; }
         }
         if(!watches.length) {
-            // Datos de ejemplo (algunas imágenes con URLs válidas y otras no para probar)
             watches = [
                 { id: Date.now()+1, name: "Cronógrafo Imperial", gender: "hombre", imageDataURL: "https://placehold.co/400x400/2a2a28/d4af37?text=Imperial", description: "Ejemplo con imagen online", price: null },
                 { id: Date.now()+2, name: "Elegance Moonphase", gender: "mujer", imageDataURL: "https://placehold.co/400x400/2a2a28/d4af37?text=Moonphase", description: "Ejemplo online", price: null },
@@ -687,11 +542,7 @@
         }
         renderCatalog();
     }
-
-    function saveWatchesToStorage() {
-        localStorage.setItem('tiempo_y_elegancia_watches_v3', JSON.stringify(watches));
-    }
-
+    function saveWatchesToStorage() { localStorage.setItem('tiempo_y_elegancia_watches_v3', JSON.stringify(watches)); }
     function renderCatalog() {
         const menFiltered = watches.filter(w => w.gender === "hombre");
         const womenFiltered = watches.filter(w => w.gender === "mujer");
@@ -700,44 +551,32 @@
         renderCategory(menFiltered, menGrid);
         renderCategory(womenFiltered, womenGrid);
     }
-
     function renderCategory(filtered, container) {
-        if(filtered.length === 0) {
-            container.innerHTML = `<div class="empty-category">✨ No hay relojes en esta categoría.</div>`;
-            return;
-        }
+        if(filtered.length === 0) { container.innerHTML = `<div class="empty-category">✨ No hay relojes en esta categoría.</div>`; return; }
         let html = '';
         filtered.forEach(watch => {
             html += `
                 <div class="watch-card" data-id="${watch.id}">
                     <div class="watch-img" data-id="${watch.id}">
-                        <img src="${watch.imageDataURL}" alt="${watch.name}" loading="lazy" 
-                             onerror="handleImageError(this, '${watch.id}')">
+                        <img src="${watch.imageDataURL}" alt="${watch.name}" loading="lazy" onerror="handleImageError(this, '${watch.id}')">
                     </div>
                     <div class="watch-info">
                         <div class="watch-name">${escapeHtml(watch.name)}</div>
                         <button class="btn-detail" data-id="${watch.id}">Ver detalles</button>
-                        ${adminPanel.classList.contains('active') ? `<button class="delete-watch" data-id="${watch.id}">🗑️ Eliminar</button>` : ''}
+                        ${adminPanelDiv.classList.contains('active') ? `<button class="delete-watch" data-id="${watch.id}">🗑️ Eliminar</button>` : ''}
                     </div>
                 </div>
             `;
         });
         container.innerHTML = html;
-
-        // Eventos de detalles y eliminación
         container.querySelectorAll('.btn-detail').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const id = parseInt(btn.getAttribute('data-id'));
-                const watch = watches.find(w => w.id === id);
-                if(watch) openDetailModal(watch);
-            });
+            btn.addEventListener('click', (e) => { e.stopPropagation(); const id = parseInt(btn.dataset.id); const watch = watches.find(w => w.id === id); if(watch) openDetailModal(watch); });
         });
-        if(adminPanel.classList.contains('active')) {
+        if(adminPanelDiv.classList.contains('active')) {
             container.querySelectorAll('.delete-watch').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const id = parseInt(btn.getAttribute('data-id'));
+                    const id = parseInt(btn.dataset.id);
                     if(confirm('¿Eliminar este reloj del catálogo?')) {
                         watches = watches.filter(w => w.id !== id);
                         saveWatchesToStorage();
@@ -749,18 +588,15 @@
         container.querySelectorAll('.watch-card').forEach(card => {
             card.addEventListener('click', (e) => {
                 if(e.target.classList.contains('btn-detail') || e.target.classList.contains('delete-watch')) return;
-                const id = parseInt(card.getAttribute('data-id'));
+                const id = parseInt(card.dataset.id);
                 const watch = watches.find(w => w.id === id);
                 if(watch) openDetailModal(watch);
             });
         });
     }
-
-    // Función global para manejar error de imagen (llamada desde el onerror)
     window.handleImageError = function(imgElement, watchId) {
         const watch = watches.find(w => w.id == watchId);
         if(!watch) return;
-        // Reemplazar la imagen con un placeholder clickable
         const parent = imgElement.parentNode;
         const placeholder = document.createElement('div');
         placeholder.className = 'error-img-placeholder';
@@ -768,25 +604,31 @@
         placeholder.style.cursor = 'pointer';
         placeholder.onclick = (e) => {
             e.stopPropagation();
-            currentBrokenWatch = watch;
-            brokenWatchNameSpan.innerText = watch.name;
-            brokenModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            // Solicitar autenticación antes de gestionar la imagen rota
+            requestAuth('repair', () => {
+                currentBrokenWatch = watch;
+                brokenWatchNameSpan.innerText = watch.name;
+                brokenModalDiv.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }, watch);
         };
         parent.replaceChild(placeholder, imgElement);
     };
-
-    // Funciones para el modal de imagen rota
-    function closeBrokenModalFunc() {
-        brokenModal.classList.remove('active');
-        document.body.style.overflow = '';
-        currentBrokenWatch = null;
+    function openDetailModal(watch) {
+        document.getElementById('modalImg').src = watch.imageDataURL;
+        document.getElementById('modalName').innerText = watch.name;
+        document.getElementById('modalDesc').innerText = watch.description || "Modelo exclusivo de nuestra colección.";
+        detailModalDiv.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
-
-    brokenUploadBtn.addEventListener('click', () => {
-        brokenImageFile.click();
-    });
-
+    function closeDetailModalFunc() { detailModalDiv.classList.remove('active'); document.body.style.overflow = ''; }
+    closeDetailModalSpan.addEventListener('click', closeDetailModalFunc);
+    detailModalDiv.addEventListener('click', (e) => { if(e.target === detailModalDiv) closeDetailModalFunc(); });
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') { if(detailModalDiv.classList.contains('active')) closeDetailModalFunc(); if(brokenModalDiv.classList.contains('active')) closeBrokenModalFunc(); if(authModal.classList.contains('active')) closeAuthModal(); } });
+    function closeBrokenModalFunc() { brokenModalDiv.classList.remove('active'); document.body.style.overflow = ''; currentBrokenWatch = null; }
+    closeBrokenModalSpan.addEventListener('click', closeBrokenModalFunc);
+    brokenCancelBtn.addEventListener('click', closeBrokenModalFunc);
+    brokenUploadBtn.addEventListener('click', () => { brokenImageFile.click(); });
     brokenImageFile.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if(!file || !currentBrokenWatch) return;
@@ -799,9 +641,8 @@
             alert('Imagen actualizada correctamente');
         };
         reader.readAsDataURL(file);
-        brokenImageFile.value = ''; // limpiar
+        brokenImageFile.value = '';
     });
-
     brokenDeleteBtn.addEventListener('click', () => {
         if(currentBrokenWatch && confirm('¿Eliminar este reloj permanentemente?')) {
             watches = watches.filter(w => w.id !== currentBrokenWatch.id);
@@ -811,59 +652,30 @@
         }
     });
 
-    brokenCancelBtn.addEventListener('click', closeBrokenModalFunc);
-    closeBrokenModal.addEventListener('click', closeBrokenModalFunc);
-
-    // Modal de detalles normales
-    function openDetailModal(watch) {
-        document.getElementById('modalImg').src = watch.imageDataURL;
-        document.getElementById('modalName').innerText = watch.name;
-        document.getElementById('modalDesc').innerText = watch.description || "Modelo exclusivo de nuestra colección.";
-        detailModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeDetailModalFunc() {
-        detailModal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    closeDetailModal.addEventListener('click', closeDetailModalFunc);
-    detailModal.addEventListener('click', (e) => {
-        if(e.target === detailModal) closeDetailModalFunc();
-    });
-    document.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape') {
-            if(detailModal.classList.contains('active')) closeDetailModalFunc();
-            if(brokenModal.classList.contains('active')) closeBrokenModalFunc();
-        }
-    });
-
-    // Admin: subir nuevo reloj
+    // Subir nuevo reloj (requiere autenticación)
     watchImageInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if(file) {
             const reader = new FileReader();
-            reader.onload = (ev) => {
-                imagePreview.innerHTML = `<img src="${ev.target.result}" style="max-width:100px; border-radius:12px;">`;
-            };
+            reader.onload = (ev) => { imagePreview.innerHTML = `<img src="${ev.target.result}" style="max-width:100px; border-radius:12px;">`; };
             reader.readAsDataURL(file);
-        } else {
-            imagePreview.innerHTML = '';
-        }
+        } else { imagePreview.innerHTML = ''; }
     });
-
     uploadForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if(!isAuthenticated) {
+            requestAuth('upload', () => {
+                // Reintentar después de autenticación
+                uploadForm.dispatchEvent(new Event('submit'));
+            });
+            return;
+        }
         const name = document.getElementById('watchName').value.trim();
         const gender = document.getElementById('watchGender').value;
         const price = document.getElementById('watchPrice').value;
         const description = document.getElementById('watchDesc').value.trim();
         const imageFile = watchImageInput.files[0];
-        if(!name || !imageFile) {
-            alert('Nombre e imagen son obligatorios');
-            return;
-        }
+        if(!name || !imageFile) { alert('Nombre e imagen son obligatorios'); return; }
         const reader = new FileReader();
         reader.onload = (ev) => {
             const newWatch = {
@@ -884,20 +696,23 @@
         reader.readAsDataURL(imageFile);
     });
 
+    // Botón de administración (requiere autenticación)
     adminToggleBtn.addEventListener('click', () => {
-        adminPanel.classList.toggle('active');
-        renderCatalog();
-        adminToggleBtn.innerHTML = adminPanel.classList.contains('active') ? '<i class="fas fa-eye"></i> Ocultar administración' : '<i class="fas fa-crown"></i> Administrar relojes';
+        if(!isAuthenticated) {
+            requestAuth('toggleAdmin', () => {
+                toggleAdminPanel();
+            });
+        } else {
+            toggleAdminPanel();
+        }
     });
-
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        });
+    function toggleAdminPanel() {
+        adminPanelDiv.classList.toggle('active');
+        renderCatalog(); // para mostrar/ocultar botones eliminar
+        adminToggleBtn.innerHTML = adminPanelDiv.classList.contains('active') ? '<i class="fas fa-eye"></i> Ocultar administración' : '<i class="fas fa-crown"></i> Administrar relojes';
     }
+
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
 
     loadWatchesFromStorage();
 </script>
