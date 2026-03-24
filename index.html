@@ -7,8 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Estilos iguales a la versión anterior, con ajustes menores para el modal de contraseña */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Estilos completos (incluye todo lo anterior y nuevos estilos para la carga múltiple) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: radial-gradient(circle at 10% 30%, #2b2b28, #1e1e1c);
@@ -28,6 +33,7 @@
             pointer-events: none;
             z-index: 0;
         }
+
         .header {
             background: rgba(10, 12, 18, 0.75);
             backdrop-filter: blur(12px);
@@ -62,7 +68,11 @@
             0% { background-position: 0% center; }
             100% { background-position: 200% center; }
         }
-        .logo p { font-size: 0.7rem; color: #d4c9a3; letter-spacing: 1px; }
+        .logo p {
+            font-size: 0.7rem;
+            color: #d4c9a3;
+            letter-spacing: 1px;
+        }
         .live-clock {
             display: flex;
             align-items: center;
@@ -73,7 +83,13 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(212,175,55,0.3);
         }
-        .clock-canvas { width: 60px; height: 60px; background: #fef3da; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+        .clock-canvas {
+            width: 60px;
+            height: 60px;
+            background: #fef3da;
+            border-radius: 50%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        }
         .digital-time {
             font-family: monospace;
             font-size: 1.2rem;
@@ -99,7 +115,6 @@
             color: #1e1e1c;
             box-shadow: 0 0 10px rgba(212,175,55,0.5);
         }
-        /* Panel admin */
         .admin-panel {
             max-width: 1400px;
             margin: 1.5rem auto 0;
@@ -108,8 +123,14 @@
             position: relative;
             z-index: 5;
         }
-        .admin-panel.active { display: block; animation: fadeSlide 0.4s ease-out; }
-        @keyframes fadeSlide { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .admin-panel.active {
+            display: block;
+            animation: fadeSlide 0.4s ease-out;
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .admin-card {
             background: rgba(30, 30, 28, 0.85);
             backdrop-filter: blur(16px);
@@ -118,9 +139,20 @@
             border: 1px solid rgba(212,175,55,0.3);
             margin-bottom: 2rem;
         }
-        .admin-card h3 { font-size: 1.5rem; margin-bottom: 1.2rem; color: #d4af37; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { color: #f0ede8; font-weight: 500; margin-bottom: 0.3rem; display: block; }
+        .admin-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            color: #d4af37;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            color: #f0ede8;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
         .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 0.7rem 1rem;
@@ -130,7 +162,22 @@
             color: #f5f0e6;
             font-family: inherit;
         }
-        .image-preview { margin-top: 0.5rem; max-width: 100px; border-radius: 16px; overflow: hidden; border: 1px solid #d4af37; }
+        .image-preview-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .image-preview {
+            max-width: 80px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #d4af37;
+        }
+        .image-preview img {
+            width: 100%;
+            display: block;
+        }
         .btn-submit {
             background: #d4af37;
             border: none;
@@ -139,11 +186,21 @@
             font-weight: 600;
             cursor: pointer;
             color: #1e1e1c;
+            transition: 0.2s;
         }
-        .btn-submit:hover { background: #f5cb5c; }
-        /* Catálogo */
-        .catalog { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; position: relative; z-index: 5; }
-        .category-section { margin-bottom: 3rem; }
+        .btn-submit:hover {
+            background: #f5cb5c;
+        }
+        .catalog {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 5;
+        }
+        .category-section {
+            margin-bottom: 3rem;
+        }
         .category-header {
             display: flex;
             align-items: baseline;
@@ -152,8 +209,18 @@
             border-left: 4px solid #d4af37;
             padding-left: 1rem;
         }
-        .category-header h2 { font-size: 1.8rem; font-family: 'Playfair Display', serif; color: #f0ede8; }
-        .category-header .count { font-size: 0.9rem; color: #d4af37; background: rgba(0,0,0,0.3); padding: 0.2rem 0.7rem; border-radius: 30px; }
+        .category-header h2 {
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+            color: #f0ede8;
+        }
+        .category-header .count {
+            font-size: 0.9rem;
+            color: #d4af37;
+            background: rgba(0,0,0,0.3);
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+        }
         .gold-line {
             width: 80px;
             height: 3px;
@@ -161,12 +228,34 @@
             margin: 0.5rem auto 1rem;
             animation: pulse 2s infinite;
         }
-        @keyframes pulse { 0% { opacity: 0.6; width: 80px; } 50% { opacity: 1; width: 100px; } 100% { opacity: 0.6; width: 80px; } }
-        .watches-scroll { overflow-x: auto; overflow-y: visible; padding-bottom: 1rem; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-        .watches-scroll::-webkit-scrollbar { height: 8px; }
-        .watches-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .watches-scroll::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
-        .watches-row { display: flex; gap: 1.5rem; padding: 0.5rem 0.2rem; }
+        @keyframes pulse {
+            0% { opacity: 0.6; width: 80px; }
+            50% { opacity: 1; width: 100px; }
+            100% { opacity: 0.6; width: 80px; }
+        }
+        .watches-scroll {
+            overflow-x: auto;
+            overflow-y: visible;
+            padding-bottom: 1rem;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .watches-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .watches-scroll::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+        .watches-scroll::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 10px;
+        }
+        .watches-row {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.5rem 0.2rem;
+        }
         .watch-card {
             flex: 0 0 auto;
             width: 280px;
@@ -178,7 +267,11 @@
             cursor: pointer;
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
-        .watch-card:hover { transform: translateY(-8px); box-shadow: 0 25px 35px -12px rgba(0,0,0,0.4); border-color: #d4af37; }
+        .watch-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.4);
+            border-color: #d4af37;
+        }
         .watch-img {
             background: rgba(0,0,0,0.3);
             height: 240px;
@@ -188,7 +281,12 @@
             padding: 1rem;
             position: relative;
         }
-        .watch-img img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+        .watch-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
         .error-img-placeholder {
             width: 100%;
             height: 100%;
@@ -202,9 +300,20 @@
             cursor: pointer;
             font-size: 0.8rem;
         }
-        .error-img-placeholder i { font-size: 2rem; margin-bottom: 0.5rem; }
-        .watch-info { padding: 1.2rem; text-align: center; }
-        .watch-name { font-weight: 700; font-size: 1.2rem; color: #f0ede8; margin-bottom: 0.5rem; }
+        .error-img-placeholder i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .watch-info {
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .watch-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #f0ede8;
+            margin-bottom: 0.5rem;
+        }
         .btn-detail {
             background: transparent;
             border: 1px solid #d4af37;
@@ -214,7 +323,10 @@
             cursor: pointer;
             color: #d4af37;
         }
-        .btn-detail:hover { background: #d4af37; color: #1e1e1c; }
+        .btn-detail:hover {
+            background: #d4af37;
+            color: #1e1e1c;
+        }
         .delete-watch {
             background: #7f2a2a;
             border: none;
@@ -225,7 +337,69 @@
             margin-top: 0.5rem;
             cursor: pointer;
         }
-        .empty-category { text-align: center; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 28px; color: #b9b5a8; width: 100%; }
+        .empty-category {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 28px;
+            color: #b9b5a8;
+            width: 100%;
+        }
+        /* Sección de servicios y garantía */
+        .services-section {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 5;
+        }
+        .services-card {
+            background: rgba(20, 22, 20, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            padding: 1.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .service-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        .service-item i {
+            font-size: 2.2rem;
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+        }
+        .service-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .service-item p {
+            font-size: 0.9rem;
+            color: #e0d6c0;
+            line-height: 1.4;
+        }
+        .service-item .price {
+            font-weight: bold;
+            color: #ffd966;
+            font-size: 1rem;
+        }
+        .care-note {
+            background: rgba(0,0,0,0.4);
+            border-radius: 24px;
+            padding: 1.2rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #e0d6c0;
+            text-align: center;
+            border-left: 3px solid #d4af37;
+        }
         /* Modales */
         .modal {
             display: none;
@@ -240,7 +414,9 @@
             justify-content: center;
             align-items: center;
         }
-        .modal.active { display: flex; }
+        .modal.active {
+            display: flex;
+        }
         .modal-content {
             background: #262624;
             max-width: 500px;
@@ -252,13 +428,45 @@
             padding: 2rem;
             text-align: center;
         }
-        .modal-content h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #d4af37; }
-        .modal-buttons { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
-        .modal-btn { padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .modal-btn.upload { background: #d4af37; color: #1e1e1c; }
-        .modal-btn.delete { background: #7f2a2a; color: white; }
-        .modal-btn.cancel { background: #4a4a46; color: white; }
-        .close-modal { position: absolute; top: 12px; right: 20px; font-size: 1.8rem; cursor: pointer; color: #d4af37; }
+        .modal-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #d4af37;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .modal-btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal-btn.upload {
+            background: #d4af37;
+            color: #1e1e1c;
+        }
+        .modal-btn.delete {
+            background: #7f2a2a;
+            color: white;
+        }
+        .modal-btn.cancel {
+            background: #4a4a46;
+            color: white;
+        }
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #d4af37;
+        }
         .modal-detail {
             background: #262624;
             max-width: 800px;
@@ -270,16 +478,71 @@
             position: relative;
             border: 1px solid #d4af37;
         }
-        .modal-img { flex: 1; background: #1a1a18; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-        .modal-img img { max-width: 100%; max-height: 300px; object-fit: contain; }
-        .modal-info { flex: 1; padding: 2rem; color: #f0ede8; }
-        .modal-info h3 { font-size: 1.8rem; font-family: 'Playfair Display', serif; }
-        footer { text-align: center; padding: 2rem; color: #b9b5a8; font-size: 0.8rem; border-top: 1px solid rgba(212,175,55,0.2); margin-top: 3rem; background: rgba(0,0,0,0.3); }
-        .creator { font-family: 'Playfair Display', serif; font-size: 0.85rem; color: #d4af37; margin-top: 0.5rem; }
-        @media (max-width: 700px) { .modal-detail { flex-direction: column; } .watch-card { width: 260px; } }
-        /* Modal contraseña */
-        .password-input { width: 100%; padding: 0.7rem; margin: 1rem 0; border-radius: 40px; border: 1px solid #d4af37; background: #2a2a28; color: white; text-align: center; font-size: 1.2rem; }
-        .password-error { color: #ff8888; margin-top: 0.5rem; font-size: 0.8rem; }
+        .modal-img {
+            flex: 1;
+            background: #1a1a18;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .modal-img img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+        }
+        .modal-info {
+            flex: 1;
+            padding: 2rem;
+            color: #f0ede8;
+        }
+        .modal-info h3 {
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #b9b5a8;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(212,175,55,0.2);
+            margin-top: 3rem;
+            background: rgba(0,0,0,0.3);
+        }
+        .creator {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            color: #d4af37;
+            margin-top: 0.5rem;
+        }
+        @media (max-width: 700px) {
+            .modal-detail {
+                flex-direction: column;
+            }
+            .watch-card {
+                width: 260px;
+            }
+            .services-card {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        .password-input {
+            width: 100%;
+            padding: 0.7rem;
+            margin: 1rem 0;
+            border-radius: 40px;
+            border: 1px solid #d4af37;
+            background: #2a2a28;
+            color: white;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        .password-error {
+            color: #ff8888;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
@@ -298,11 +561,29 @@
     </div>
 </header>
 
-<!-- Panel de administración (protegido) -->
+<!-- Panel de administración con carga múltiple -->
 <div class="admin-panel" id="adminPanel">
     <div class="admin-card">
-        <h3><i class="fas fa-upload"></i> Subir nuevo reloj</h3>
+        <h3><i class="fas fa-upload"></i> Subir nuevos relojes</h3>
         <form id="uploadWatchForm">
+            <div class="form-group">
+                <label>Categoría para todos *</label>
+                <select id="batchGender" required>
+                    <option value="hombre">Hombre</option>
+                    <option value="mujer">Dama</option>
+                </select>
+                <small style="color:#cbcbc0;">Selecciona varias imágenes a la vez para subirlas todas en esta categoría</small>
+            </div>
+            <div class="form-group">
+                <label>Seleccionar imágenes * (múltiple)</label>
+                <input type="file" id="batchImages" accept="image/jpeg,image/png,image/webp" multiple>
+                <div class="image-preview-area" id="batchPreview"></div>
+            </div>
+            <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Subir todas las imágenes</button>
+        </form>
+        <hr style="margin: 1.5rem 0; border-color: #4a4a46;">
+        <h3><i class="fas fa-plus-circle"></i> Subir un reloj con datos personalizados</h3>
+        <form id="singleWatchForm">
             <div class="form-group">
                 <label>Nombre del reloj *</label>
                 <input type="text" id="watchName" required placeholder="Ej: Cronógrafo Imperial">
@@ -324,8 +605,8 @@
             </div>
             <div class="form-group">
                 <label>Imagen del reloj *</label>
-                <input type="file" id="watchImage" accept="image/jpeg,image/png,image/webp">
-                <div class="image-preview" id="imagePreview"></div>
+                <input type="file" id="singleImage" accept="image/jpeg,image/png,image/webp">
+                <div class="image-preview-area" id="singlePreview"></div>
             </div>
             <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Guardar reloj</button>
         </form>
@@ -349,12 +630,37 @@
     </div>
 </section>
 
+<!-- Sección de servicios con texto actualizado -->
+<div class="services-section">
+    <div class="services-card">
+        <div class="service-item">
+            <i class="fas fa-battery-full"></i>
+            <h4>Garantía en Pilas y Maquinaria</h4>
+            <p>3 meses de garantía en el funcionamiento de pilas y mecanismo interno.</p>
+        </div>
+        <div class="service-item">
+            <i class="fas fa-hand-sparkles"></i>
+            <h4>Ajuste de Manilla Gratis</h4>
+            <p>Si el reloj es comprado en <strong>Tiempo y Elegancia</strong>, el recorte de manilla es sin costo.</p>
+        </div>
+        <div class="service-item">
+            <i class="fas fa-clock"></i>
+            <h4>Servicio para otros relojes</h4>
+            <p>Si traes un reloj que no fue comprado aquí, el ajuste de manilla tiene un costo de <span class="price">$5,000 mil</span>.</p>
+        </div>
+    </div>
+    <div class="care-note">
+        <i class="fas fa-water" style="margin-right: 8px; color: #d4af37;"></i>
+        Nuestras piezas están diseñadas para acompañar tu estilo diario con resistencia a salpicaduras accidentales. Para preservar la integridad del mecanismo y sus acabados, recomendamos evitar la inmersión en agua y el contacto con agentes abrasivos. El desgaste natural por uso o exposición a químicos no está cubierto por la garantía.
+    </div>
+</div>
+
 <footer>
     <p>Tiempo y Elegancia | Desde 2025 | La medida del buen gusto</p>
     <div class="creator">✧ Creador: Rafael Santo Escoria ✧</div>
 </footer>
 
-<!-- Modal de detalles -->
+<!-- Modales (igual que antes) -->
 <div id="detailModal" class="modal">
     <div class="modal-detail">
         <span class="close-modal" id="closeDetailModal">&times;</span>
@@ -363,7 +669,6 @@
     </div>
 </div>
 
-<!-- Modal para gestionar imagen rota (protegido) -->
 <div id="brokenImageModal" class="modal">
     <div class="modal-content">
         <span class="close-modal" id="closeBrokenModal">&times;</span>
@@ -378,7 +683,6 @@
     </div>
 </div>
 
-<!-- Modal de autenticación -->
 <div id="authModal" class="modal">
     <div class="modal-content">
         <h3><i class="fas fa-lock"></i> Acceso restringido</h3>
@@ -393,58 +697,6 @@
 </div>
 
 <script>
-    // ---------- CONTRASEÑA ----------
-    const ADMIN_PASSWORD = "2024";
-    let isAuthenticated = false;
-
-    // Elementos de autenticación
-    const authModal = document.getElementById('authModal');
-    const authPasswordInput = document.getElementById('authPassword');
-    const authErrorSpan = document.getElementById('authError');
-    const authSubmitBtn = document.getElementById('authSubmitBtn');
-    const authCancelBtn = document.getElementById('authCancelBtn');
-
-    // Variables para recordar la acción pendiente
-    let pendingAction = null; // 'toggleAdmin', 'repairWatch', etc.
-    let pendingRepairWatch = null;
-
-    // Función para solicitar contraseña
-    function requestAuth(action, callback, watch = null) {
-        pendingAction = action;
-        if (watch) pendingRepairWatch = watch;
-        authPasswordInput.value = '';
-        authErrorSpan.innerText = '';
-        authModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        // Guardar callback temporalmente
-        window.authCallback = callback;
-    }
-
-    function closeAuthModal() {
-        authModal.classList.remove('active');
-        document.body.style.overflow = '';
-        pendingAction = null;
-        pendingRepairWatch = null;
-    }
-
-    function checkPassword() {
-        const password = authPasswordInput.value;
-        if (password === ADMIN_PASSWORD) {
-            isAuthenticated = true;
-            closeAuthModal();
-            if (window.authCallback) {
-                window.authCallback();
-                window.authCallback = null;
-            }
-        } else {
-            authErrorSpan.innerText = 'Contraseña incorrecta. Intenta nuevamente.';
-        }
-    }
-
-    authSubmitBtn.addEventListener('click', checkPassword);
-    authCancelBtn.addEventListener('click', closeAuthModal);
-    authPasswordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
-
     // ---------- RELOJ ANÁLOGO ----------
     const clockCanvas = document.getElementById('analogClockCanvas');
     const clockCtx = clockCanvas.getContext('2d');
@@ -504,17 +756,24 @@
     setInterval(drawAnalogClock, 1000);
     drawAnalogClock();
 
-    // ---------- GESTIÓN DE RELOJES ----------
+    // ---------- GESTIÓN DE RELOJES CON AUTENTICACIÓN ----------
+    const ADMIN_PASSWORD = "2024";
+    let isAuthenticated = false;
     let watches = [];
+
     const menGrid = document.getElementById('menGrid');
     const womenGrid = document.getElementById('womenGrid');
     const menCountSpan = document.getElementById('menCount');
     const womenCountSpan = document.getElementById('womenCount');
     const adminPanelDiv = document.getElementById('adminPanel');
     const adminToggleBtn = document.getElementById('adminToggleBtn');
-    const uploadForm = document.getElementById('uploadWatchForm');
-    const watchImageInput = document.getElementById('watchImage');
-    const imagePreview = document.getElementById('imagePreview');
+    const batchImagesInput = document.getElementById('batchImages');
+    const batchPreview = document.getElementById('batchPreview');
+    const batchGender = document.getElementById('batchGender');
+    const singleImageInput = document.getElementById('singleImage');
+    const singlePreview = document.getElementById('singlePreview');
+    const singleForm = document.getElementById('singleWatchForm');
+    const batchForm = document.getElementById('uploadWatchForm');
     const detailModalDiv = document.getElementById('detailModal');
     const brokenModalDiv = document.getElementById('brokenImageModal');
     const closeDetailModalSpan = document.getElementById('closeDetailModal');
@@ -524,9 +783,48 @@
     const brokenCancelBtn = document.getElementById('brokenCancelBtn');
     const brokenImageFile = document.getElementById('brokenImageFile');
     const brokenWatchNameSpan = document.getElementById('brokenWatchName');
-    let currentBrokenWatch = null;
+    const authModal = document.getElementById('authModal');
+    const authPasswordInput = document.getElementById('authPassword');
+    const authErrorSpan = document.getElementById('authError');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const authCancelBtn = document.getElementById('authCancelBtn');
+    let pendingAction = null;
+    let pendingRepairWatch = null;
+    let authCallback = null;
 
-    // Cargar datos
+    function requestAuth(action, callback, watch = null) {
+        pendingAction = action;
+        if (watch) pendingRepairWatch = watch;
+        authPasswordInput.value = '';
+        authErrorSpan.innerText = '';
+        authModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        authCallback = callback;
+    }
+
+    function closeAuthModal() {
+        authModal.classList.remove('active');
+        document.body.style.overflow = '';
+        pendingAction = null;
+        pendingRepairWatch = null;
+        authCallback = null;
+    }
+
+    function checkPassword() {
+        const password = authPasswordInput.value;
+        if (password === ADMIN_PASSWORD) {
+            isAuthenticated = true;
+            closeAuthModal();
+            if (authCallback) authCallback();
+        } else {
+            authErrorSpan.innerText = 'Contraseña incorrecta. Intenta nuevamente.';
+        }
+    }
+
+    authSubmitBtn.addEventListener('click', checkPassword);
+    authCancelBtn.addEventListener('click', closeAuthModal);
+    authPasswordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
+
     function loadWatchesFromStorage() {
         const stored = localStorage.getItem('tiempo_y_elegancia_watches_v3');
         if(stored) {
@@ -604,7 +902,6 @@
         placeholder.style.cursor = 'pointer';
         placeholder.onclick = (e) => {
             e.stopPropagation();
-            // Solicitar autenticación antes de gestionar la imagen rota
             requestAuth('repair', () => {
                 currentBrokenWatch = watch;
                 brokenWatchNameSpan.innerText = watch.name;
@@ -652,29 +949,84 @@
         }
     });
 
-    // Subir nuevo reloj (requiere autenticación)
-    watchImageInput.addEventListener('change', (e) => {
+    // Previsualización múltiple
+    batchImagesInput.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files);
+        batchPreview.innerHTML = '';
+        files.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const div = document.createElement('div');
+                div.className = 'image-preview';
+                div.innerHTML = `<img src="${ev.target.result}" style="width:100%">`;
+                batchPreview.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+    singleImageInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
+        singlePreview.innerHTML = '';
         if(file) {
             const reader = new FileReader();
-            reader.onload = (ev) => { imagePreview.innerHTML = `<img src="${ev.target.result}" style="max-width:100px; border-radius:12px;">`; };
+            reader.onload = (ev) => {
+                const div = document.createElement('div');
+                div.className = 'image-preview';
+                div.innerHTML = `<img src="${ev.target.result}" style="width:100%">`;
+                singlePreview.appendChild(div);
+            };
             reader.readAsDataURL(file);
-        } else { imagePreview.innerHTML = ''; }
+        }
     });
-    uploadForm.addEventListener('submit', async (e) => {
+
+    // Subida múltiple (batch)
+    batchForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         if(!isAuthenticated) {
-            requestAuth('upload', () => {
-                // Reintentar después de autenticación
-                uploadForm.dispatchEvent(new Event('submit'));
+            requestAuth('batch', () => { batchForm.dispatchEvent(new Event('submit')); });
+            return;
+        }
+        const files = batchImagesInput.files;
+        const gender = batchGender.value;
+        if(files.length === 0) { alert('Selecciona al menos una imagen'); return; }
+        let added = 0;
+        for(let file of files) {
+            const reader = new FileReader();
+            const dataURL = await new Promise(resolve => {
+                reader.onload = ev => resolve(ev.target.result);
+                reader.readAsDataURL(file);
             });
+            const name = file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " ").substring(0, 30);
+            const newWatch = {
+                id: Date.now() + Math.random(),
+                name: name,
+                gender: gender,
+                imageDataURL: dataURL,
+                description: "Reloj de colección",
+                price: null
+            };
+            watches.push(newWatch);
+            added++;
+        }
+        saveWatchesToStorage();
+        renderCatalog();
+        batchImagesInput.value = '';
+        batchPreview.innerHTML = '';
+        alert(`Se agregaron ${added} relojes correctamente`);
+    });
+
+    // Subida individual
+    singleForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if(!isAuthenticated) {
+            requestAuth('single', () => { singleForm.dispatchEvent(new Event('submit')); });
             return;
         }
         const name = document.getElementById('watchName').value.trim();
         const gender = document.getElementById('watchGender').value;
         const price = document.getElementById('watchPrice').value;
         const description = document.getElementById('watchDesc').value.trim();
-        const imageFile = watchImageInput.files[0];
+        const imageFile = singleImageInput.files[0];
         if(!name || !imageFile) { alert('Nombre e imagen son obligatorios'); return; }
         const reader = new FileReader();
         reader.onload = (ev) => {
@@ -689,26 +1041,23 @@
             watches.push(newWatch);
             saveWatchesToStorage();
             renderCatalog();
-            uploadForm.reset();
-            imagePreview.innerHTML = '';
+            singleForm.reset();
+            singlePreview.innerHTML = '';
             alert('Reloj agregado');
         };
         reader.readAsDataURL(imageFile);
     });
 
-    // Botón de administración (requiere autenticación)
     adminToggleBtn.addEventListener('click', () => {
         if(!isAuthenticated) {
-            requestAuth('toggleAdmin', () => {
-                toggleAdminPanel();
-            });
+            requestAuth('toggleAdmin', () => { toggleAdminPanel(); });
         } else {
             toggleAdminPanel();
         }
     });
     function toggleAdminPanel() {
         adminPanelDiv.classList.toggle('active');
-        renderCatalog(); // para mostrar/ocultar botones eliminar
+        renderCatalog();
         adminToggleBtn.innerHTML = adminPanelDiv.classList.contains('active') ? '<i class="fas fa-eye"></i> Ocultar administración' : '<i class="fas fa-crown"></i> Administrar relojes';
     }
 
