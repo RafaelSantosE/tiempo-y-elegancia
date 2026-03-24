@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Tiempo y Elegancia | Relojería Exclusiva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 30%, #2b2b28, #1e1e1c);
+            color: #f0ede8;
+            scroll-behavior: smooth;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(212, 175, 55, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(10, 12, 18, 0.75);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.5);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f5e7c8, #d4af37, #f5e7c8);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        .logo p {
+            font-size: 0.7rem;
+            color: #d4c9a3;
+            letter-spacing: 1px;
+        }
+
+        /* Reloj análogo */
+        .live-clock {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(0,0,0,0.4);
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(212,175,55,0.3);
+        }
+        .clock-canvas {
+            width: 60px;
+            height: 60px;
+            background: #fef3da;
+            border-radius: 50%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        }
+        .digital-time {
+            font-family: monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #d4af37;
+            background: #1e1e1c;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+        }
+
+        .admin-toggle {
+            background: rgba(30,30,28,0.8);
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.85rem;
+        }
+        .admin-toggle:hover {
+            background: #d4af37;
+            color: #1e1e1c;
+            box-shadow: 0 0 10px rgba(212,175,55,0.5);
+        }
+
+        /* Panel admin */
+        .admin-panel {
+            max-width: 1400px;
+            margin: 1.5rem auto 0;
+            padding: 0 2rem;
+            display: none;
+            position: relative;
+            z-index: 5;
+        }
+        .admin-panel.active {
+            display: block;
+            animation: fadeSlide 0.4s ease-out;
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .admin-card {
+            background: rgba(30, 30, 28, 0.85);
+            backdrop-filter: blur(16px);
+            border-radius: 32px;
+            padding: 1.8rem;
+            border: 1px solid rgba(212,175,55,0.3);
+            margin-bottom: 2rem;
+        }
+        .admin-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            color: #d4af37;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            color: #f0ede8;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            background: #2a2a28;
+            border: 1px solid #4a4a46;
+            border-radius: 20px;
+            color: #f5f0e6;
+            font-family: inherit;
+        }
+        .image-preview {
+            margin-top: 0.5rem;
+            max-width: 100px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #d4af37;
+        }
+        .btn-submit {
+            background: #d4af37;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #1e1e1c;
+        }
+        .btn-submit:hover {
+            background: #f5cb5c;
+        }
+
+        /* Catálogo */
+        .catalog {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 5;
+        }
+        .category-section {
+            margin-bottom: 3rem;
+        }
+        .category-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            border-left: 4px solid #d4af37;
+            padding-left: 1rem;
+        }
+        .category-header h2 {
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+            color: #f0ede8;
+        }
+        .category-header .count {
+            font-size: 0.9rem;
+            color: #d4af37;
+            background: rgba(0,0,0,0.3);
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+        }
+        .gold-line {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #d4af37, #f5e7c8, #d4af37);
+            margin: 0.5rem auto 1rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.6; width: 80px; }
+            50% { opacity: 1; width: 100px; }
+            100% { opacity: 0.6; width: 80px; }
+        }
+        .watches-scroll {
+            overflow-x: auto;
+            overflow-y: visible;
+            padding-bottom: 1rem;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .watches-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .watches-scroll::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+        .watches-scroll::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 10px;
+        }
+        .watches-row {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.5rem 0.2rem;
+        }
+        .watch-card {
+            flex: 0 0 auto;
+            width: 280px;
+            background: rgba(20, 22, 20, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .watch-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.4);
+            border-color: #d4af37;
+        }
+        .watch-img {
+            background: rgba(0,0,0,0.3);
+            height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+        }
+        .watch-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+        .error-img-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #2a2a28;
+            color: #d4af37;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .error-img-placeholder i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .watch-info {
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .watch-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #f0ede8;
+            margin-bottom: 0.5rem;
+        }
+        .btn-detail {
+            background: transparent;
+            border: 1px solid #d4af37;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #d4af37;
+        }
+        .btn-detail:hover {
+            background: #d4af37;
+            color: #1e1e1c;
+        }
+        .delete-watch {
+            background: #7f2a2a;
+            border: none;
+            color: #ffdddd;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            cursor: pointer;
+        }
+        .empty-category {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 28px;
+            color: #b9b5a8;
+            width: 100%;
+        }
+
+        /* Modal para imagen rota */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #262624;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #d4af37;
+            padding: 2rem;
+            text-align: center;
+        }
+        .modal-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #d4af37;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .modal-btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal-btn.upload {
+            background: #d4af37;
+            color: #1e1e1c;
+        }
+        .modal-btn.delete {
+            background: #7f2a2a;
+            color: white;
+        }
+        .modal-btn.cancel {
+            background: #4a4a46;
+            color: white;
+        }
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #d4af37;
+        }
+
+        /* Modal de detalles (para imágenes normales) */
+        .modal-detail {
+            background: #262624;
+            max-width: 800px;
+            width: 90%;
+            border-radius: 32px;
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #d4af37;
+        }
+        .modal-img {
+            flex: 1;
+            background: #1a1a18;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .modal-img img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+        }
+        .modal-info {
+            flex: 1;
+            padding: 2rem;
+            color: #f0ede8;
+        }
+        .modal-info h3 {
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #b9b5a8;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(212,175,55,0.2);
+            margin-top: 3rem;
+            background: rgba(0,0,0,0.3);
+        }
+        .creator {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            color: #d4af37;
+            margin-top: 0.5rem;
+        }
+        @media (max-width: 700px) {
+            .modal-detail { flex-direction: column; }
+            .watch-card { width: 260px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="nav-container">
+        <div class="logo">
+            <h1>Tiempo y Elegancia</h1>
+            <p>Relojería de autor</p>
+        </div>
+        <div class="live-clock">
+            <canvas id="analogClockCanvas" width="60" height="60" class="clock-canvas"></canvas>
+            <div class="digital-time" id="digitalClock"></div>
+        </div>
+        <button class="admin-toggle" id="adminToggleBtn"><i class="fas fa-crown"></i> Administrar relojes</button>
+    </div>
+</header>
+
+<!-- Panel de administración -->
+<div class="admin-panel" id="adminPanel">
+    <div class="admin-card">
+        <h3><i class="fas fa-upload"></i> Subir nuevo reloj</h3>
+        <form id="uploadWatchForm">
+            <div class="form-group">
+                <label>Nombre del reloj *</label>
+                <input type="text" id="watchName" required placeholder="Ej: Cronógrafo Imperial">
+            </div>
+            <div class="form-group">
+                <label>Categoría *</label>
+                <select id="watchGender" required>
+                    <option value="hombre">Hombre</option>
+                    <option value="mujer">Dama</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Precio (USD) - opcional</label>
+                <input type="number" id="watchPrice" step="0.01" placeholder="Dejar vacío si no tiene precio">
+            </div>
+            <div class="form-group">
+                <label>Descripción breve</label>
+                <textarea id="watchDesc" rows="2" placeholder="Descripción del modelo"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Imagen del reloj *</label>
+                <input type="file" id="watchImage" accept="image/jpeg,image/png,image/webp">
+                <div class="image-preview" id="imagePreview"></div>
+            </div>
+            <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Guardar reloj</button>
+        </form>
+    </div>
+</div>
+
+<!-- Catálogo -->
+<section class="catalog">
+    <div class="catalog-header" style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="font-size: 2.5rem; background: linear-gradient(135deg, #f5e7c8, #d4af37); background-clip: text; -webkit-background-clip: text; color: transparent;">Nuestra Colección</h2>
+        <div class="gold-line"></div>
+        <p>Desliza lateralmente para ver todos los modelos</p>
+    </div>
+    
+    <div class="category-section" id="menSection">
+        <div class="category-header">
+            <h2><i class="fas fa-mars"></i> Relojes para Hombre</h2>
+            <span class="count" id="menCount">0</span>
+        </div>
+        <div class="watches-scroll">
+            <div id="menGrid" class="watches-row"></div>
+        </div>
+    </div>
+
+    <div class="category-section" id="womenSection">
+        <div class="category-header">
+            <h2><i class="fas fa-venus"></i> Relojes para Dama</h2>
+            <span class="count" id="womenCount">0</span>
+        </div>
+        <div class="watches-scroll">
+            <div id="womenGrid" class="watches-row"></div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>Tiempo y Elegancia | Desde 2025 | La medida del buen gusto</p>
+    <div class="creator">✧ Creador: Rafael Santo Escoria ✧</div>
+</footer>
+
+<!-- Modal para detalles de reloj (funcionamiento normal) -->
+<div id="detailModal" class="modal">
+    <div class="modal-detail">
+        <span class="close-modal" id="closeDetailModal">&times;</span>
+        <div class="modal-img">
+            <img id="modalImg" src="" alt="Reloj">
+        </div>
+        <div class="modal-info">
+            <h3 id="modalName"></h3>
+            <p id="modalDesc"></p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para gestionar imagen rota -->
+<div id="brokenImageModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeBrokenModal">&times;</span>
+        <h3><i class="fas fa-exclamation-triangle"></i> Imagen no disponible</h3>
+        <p id="brokenWatchName"></p>
+        <div class="modal-buttons">
+            <button class="modal-btn upload" id="brokenUploadBtn"><i class="fas fa-upload"></i> Subir nueva imagen</button>
+            <button class="modal-btn delete" id="brokenDeleteBtn"><i class="fas fa-trash"></i> Eliminar reloj</button>
+            <button class="modal-btn cancel" id="brokenCancelBtn">Cancelar</button>
+        </div>
+        <input type="file" id="brokenImageFile" accept="image/jpeg,image/png,image/webp" style="display: none;">
+    </div>
+</div>
+
+<script>
+    // ---------- RELOJ ANÁLOGO ----------
+    const clockCanvas = document.getElementById('analogClockCanvas');
+    const clockCtx = clockCanvas.getContext('2d');
+    const digitalSpan = document.getElementById('digitalClock');
+
+    function drawAnalogClock() {
+        const now = new Date();
+        const hours = now.getHours() % 12;
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const size = 60, centerX = 30, centerY = 30, radius = 27;
+        clockCtx.clearRect(0, 0, size, size);
+        clockCtx.beginPath();
+        clockCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        clockCtx.fillStyle = "#fef3da";
+        clockCtx.fill();
+        clockCtx.strokeStyle = "#d4af37";
+        clockCtx.lineWidth = 1.5;
+        clockCtx.stroke();
+        for (let i = 1; i <= 12; i++) {
+            let angle = (i * 30 - 90) * Math.PI/180;
+            let startX = centerX + Math.cos(angle) * (radius * 0.7);
+            let startY = centerY + Math.sin(angle) * (radius * 0.7);
+            let endX = centerX + Math.cos(angle) * (radius * 0.85);
+            let endY = centerY + Math.sin(angle) * (radius * 0.85);
+            clockCtx.beginPath();
+            clockCtx.moveTo(startX, startY);
+            clockCtx.lineTo(endX, endY);
+            clockCtx.lineWidth = (i % 3 === 0) ? 2 : 1;
+            clockCtx.strokeStyle = "#3b3b3b";
+            clockCtx.stroke();
+        }
+        let hourAngle = (hours * 30 + minutes * 0.5 - 90) * Math.PI/180;
+        let minuteAngle = (minutes * 6 + seconds * 0.1 - 90) * Math.PI/180;
+        let secondAngle = (seconds * 6 - 90) * Math.PI/180;
+        clockCtx.beginPath();
+        clockCtx.moveTo(centerX, centerY);
+        clockCtx.lineTo(centerX + Math.cos(hourAngle) * 18, centerY + Math.sin(hourAngle) * 18);
+        clockCtx.lineWidth = 2.5;
+        clockCtx.strokeStyle = "#1f2937";
+        clockCtx.stroke();
+        clockCtx.beginPath();
+        clockCtx.moveTo(centerX, centerY);
+        clockCtx.lineTo(centerX + Math.cos(minuteAngle) * 23, centerY + Math.sin(minuteAngle) * 23);
+        clockCtx.lineWidth = 1.8;
+        clockCtx.strokeStyle = "#4b5563";
+        clockCtx.stroke();
+        clockCtx.beginPath();
+        clockCtx.moveTo(centerX, centerY);
+        clockCtx.lineTo(centerX + Math.cos(secondAngle) * 25, centerY + Math.sin(secondAngle) * 25);
+        clockCtx.lineWidth = 1.2;
+        clockCtx.strokeStyle = "#d4af37";
+        clockCtx.stroke();
+        clockCtx.beginPath();
+        clockCtx.arc(centerX, centerY, 2.5, 0, 2 * Math.PI);
+        clockCtx.fillStyle = "#d4af37";
+        clockCtx.fill();
+        digitalSpan.innerText = now.toLocaleTimeString('es-ES');
+    }
+    setInterval(drawAnalogClock, 1000);
+    drawAnalogClock();
+
+    // ---------- GESTIÓN DE RELOJES ----------
+    let watches = [];
+
+    // Elementos DOM
+    const menGrid = document.getElementById('menGrid');
+    const womenGrid = document.getElementById('womenGrid');
+    const menCountSpan = document.getElementById('menCount');
+    const womenCountSpan = document.getElementById('womenCount');
+    const adminPanel = document.getElementById('adminPanel');
+    const adminToggleBtn = document.getElementById('adminToggleBtn');
+    const uploadForm = document.getElementById('uploadWatchForm');
+    const watchImageInput = document.getElementById('watchImage');
+    const imagePreview = document.getElementById('imagePreview');
+    const detailModal = document.getElementById('detailModal');
+    const brokenModal = document.getElementById('brokenImageModal');
+    const closeDetailModal = document.getElementById('closeDetailModal');
+    const closeBrokenModal = document.getElementById('closeBrokenModal');
+    const brokenUploadBtn = document.getElementById('brokenUploadBtn');
+    const brokenDeleteBtn = document.getElementById('brokenDeleteBtn');
+    const brokenCancelBtn = document.getElementById('brokenCancelBtn');
+    const brokenImageFile = document.getElementById('brokenImageFile');
+    const brokenWatchNameSpan = document.getElementById('brokenWatchName');
+
+    let currentBrokenWatch = null; // guarda el reloj que tiene la imagen rota
+
+    // Cargar datos de localStorage o inicializar con ejemplo
+    function loadWatchesFromStorage() {
+        const stored = localStorage.getItem('tiempo_y_elegancia_watches_v3');
+        if(stored) {
+            try {
+                watches = JSON.parse(stored);
+            } catch(e) { watches = []; }
+        }
+        if(!watches.length) {
+            // Datos de ejemplo (algunas imágenes con URLs válidas y otras no para probar)
+            watches = [
+                { id: Date.now()+1, name: "Cronógrafo Imperial", gender: "hombre", imageDataURL: "https://placehold.co/400x400/2a2a28/d4af37?text=Imperial", description: "Ejemplo con imagen online", price: null },
+                { id: Date.now()+2, name: "Elegance Moonphase", gender: "mujer", imageDataURL: "https://placehold.co/400x400/2a2a28/d4af37?text=Moonphase", description: "Ejemplo online", price: null },
+                { id: Date.now()+3, name: "Imagen rota (prueba)", gender: "hombre", imageDataURL: "ruta/inexistente.jpg", description: "Esta imagen no carga, haz clic para reparar", price: null }
+            ];
+            saveWatchesToStorage();
+        }
+        renderCatalog();
+    }
+
+    function saveWatchesToStorage() {
+        localStorage.setItem('tiempo_y_elegancia_watches_v3', JSON.stringify(watches));
+    }
+
+    function renderCatalog() {
+        const menFiltered = watches.filter(w => w.gender === "hombre");
+        const womenFiltered = watches.filter(w => w.gender === "mujer");
+        menCountSpan.innerText = menFiltered.length;
+        womenCountSpan.innerText = womenFiltered.length;
+        renderCategory(menFiltered, menGrid);
+        renderCategory(womenFiltered, womenGrid);
+    }
+
+    function renderCategory(filtered, container) {
+        if(filtered.length === 0) {
+            container.innerHTML = `<div class="empty-category">✨ No hay relojes en esta categoría.</div>`;
+            return;
+        }
+        let html = '';
+        filtered.forEach(watch => {
+            html += `
+                <div class="watch-card" data-id="${watch.id}">
+                    <div class="watch-img" data-id="${watch.id}">
+                        <img src="${watch.imageDataURL}" alt="${watch.name}" loading="lazy" 
+                             onerror="handleImageError(this, '${watch.id}')">
+                    </div>
+                    <div class="watch-info">
+                        <div class="watch-name">${escapeHtml(watch.name)}</div>
+                        <button class="btn-detail" data-id="${watch.id}">Ver detalles</button>
+                        ${adminPanel.classList.contains('active') ? `<button class="delete-watch" data-id="${watch.id}">🗑️ Eliminar</button>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+
+        // Eventos de detalles y eliminación
+        container.querySelectorAll('.btn-detail').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.getAttribute('data-id'));
+                const watch = watches.find(w => w.id === id);
+                if(watch) openDetailModal(watch);
+            });
+        });
+        if(adminPanel.classList.contains('active')) {
+            container.querySelectorAll('.delete-watch').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    if(confirm('¿Eliminar este reloj del catálogo?')) {
+                        watches = watches.filter(w => w.id !== id);
+                        saveWatchesToStorage();
+                        renderCatalog();
+                    }
+                });
+            });
+        }
+        container.querySelectorAll('.watch-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if(e.target.classList.contains('btn-detail') || e.target.classList.contains('delete-watch')) return;
+                const id = parseInt(card.getAttribute('data-id'));
+                const watch = watches.find(w => w.id === id);
+                if(watch) openDetailModal(watch);
+            });
+        });
+    }
+
+    // Función global para manejar error de imagen (llamada desde el onerror)
+    window.handleImageError = function(imgElement, watchId) {
+        const watch = watches.find(w => w.id == watchId);
+        if(!watch) return;
+        // Reemplazar la imagen con un placeholder clickable
+        const parent = imgElement.parentNode;
+        const placeholder = document.createElement('div');
+        placeholder.className = 'error-img-placeholder';
+        placeholder.innerHTML = '<i class="fas fa-image"></i><span>Imagen no disponible<br>Haz clic para gestionar</span>';
+        placeholder.style.cursor = 'pointer';
+        placeholder.onclick = (e) => {
+            e.stopPropagation();
+            currentBrokenWatch = watch;
+            brokenWatchNameSpan.innerText = watch.name;
+            brokenModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+        parent.replaceChild(placeholder, imgElement);
+    };
+
+    // Funciones para el modal de imagen rota
+    function closeBrokenModalFunc() {
+        brokenModal.classList.remove('active');
+        document.body.style.overflow = '';
+        currentBrokenWatch = null;
+    }
+
+    brokenUploadBtn.addEventListener('click', () => {
+        brokenImageFile.click();
+    });
+
+    brokenImageFile.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if(!file || !currentBrokenWatch) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            currentBrokenWatch.imageDataURL = ev.target.result;
+            saveWatchesToStorage();
+            renderCatalog();
+            closeBrokenModalFunc();
+            alert('Imagen actualizada correctamente');
+        };
+        reader.readAsDataURL(file);
+        brokenImageFile.value = ''; // limpiar
+    });
+
+    brokenDeleteBtn.addEventListener('click', () => {
+        if(currentBrokenWatch && confirm('¿Eliminar este reloj permanentemente?')) {
+            watches = watches.filter(w => w.id !== currentBrokenWatch.id);
+            saveWatchesToStorage();
+            renderCatalog();
+            closeBrokenModalFunc();
+        }
+    });
+
+    brokenCancelBtn.addEventListener('click', closeBrokenModalFunc);
+    closeBrokenModal.addEventListener('click', closeBrokenModalFunc);
+
+    // Modal de detalles normales
+    function openDetailModal(watch) {
+        document.getElementById('modalImg').src = watch.imageDataURL;
+        document.getElementById('modalName').innerText = watch.name;
+        document.getElementById('modalDesc').innerText = watch.description || "Modelo exclusivo de nuestra colección.";
+        detailModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDetailModalFunc() {
+        detailModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    closeDetailModal.addEventListener('click', closeDetailModalFunc);
+    detailModal.addEventListener('click', (e) => {
+        if(e.target === detailModal) closeDetailModalFunc();
+    });
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') {
+            if(detailModal.classList.contains('active')) closeDetailModalFunc();
+            if(brokenModal.classList.contains('active')) closeBrokenModalFunc();
+        }
+    });
+
+    // Admin: subir nuevo reloj
+    watchImageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if(file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                imagePreview.innerHTML = `<img src="${ev.target.result}" style="max-width:100px; border-radius:12px;">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.innerHTML = '';
+        }
+    });
+
+    uploadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('watchName').value.trim();
+        const gender = document.getElementById('watchGender').value;
+        const price = document.getElementById('watchPrice').value;
+        const description = document.getElementById('watchDesc').value.trim();
+        const imageFile = watchImageInput.files[0];
+        if(!name || !imageFile) {
+            alert('Nombre e imagen son obligatorios');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const newWatch = {
+                id: Date.now(),
+                name: name,
+                gender: gender,
+                imageDataURL: ev.target.result,
+                description: description || "Sin descripción",
+                price: price ? parseFloat(price) : null
+            };
+            watches.push(newWatch);
+            saveWatchesToStorage();
+            renderCatalog();
+            uploadForm.reset();
+            imagePreview.innerHTML = '';
+            alert('Reloj agregado');
+        };
+        reader.readAsDataURL(imageFile);
+    });
+
+    adminToggleBtn.addEventListener('click', () => {
+        adminPanel.classList.toggle('active');
+        renderCatalog();
+        adminToggleBtn.innerHTML = adminPanel.classList.contains('active') ? '<i class="fas fa-eye"></i> Ocultar administración' : '<i class="fas fa-crown"></i> Administrar relojes';
+    });
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    loadWatchesFromStorage();
+</script>
+</body>
+</html>
