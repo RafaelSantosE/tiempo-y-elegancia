@@ -1,1 +1,138 @@
+<?php
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, X-Password');
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
+}
+
+require_once '../config/database.php';
+
+define('ADMIN_PASSWORD', '2024');
+
+function checkAuth() {
+    $headers = getallheaders();
+    $password = $headers['X-Password'] ?? $_POST['password'] ?? null;
+    return $password === ADMIN_PASSWORD;
+}
+
+$method = $_SERVER['REQUEST_METHOD'];
+$id = $_GET['id'] ?? null;
+$action = $_GET['action'] ?? null;
+
+try {
+    switch ($method) {
+        case 'GET':
+            $stmt = $pdo->query("SELECT * FROM watches ORDER BY created_at DESC");
+            $watches = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($watches);
+            break;
+
+        case 'POST':
+            if (!checkAuth()) {
+                http_response_code(401);
+                echo json_encode(['error' => 'Acceso denegado']);
+                break;
+            }
+
+            if ($action === 'update_image' && $id) {
+                if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Imagen no recibida']);
+                    break;
+                }
+                $file = $_FILES['image'];
+                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+                if (!in_array(strtolower($ext), $allowed)) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Formato no permitido']);
+                    break;
+                }
+                $filename = uniqid() . '.' . $ext;
+                $uploadPath = '../uploads/' . $filename;
+                if (!move_uploaded_file($file['tmp_name'], $uploadPath)) {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Error al guardar imagen']);
+                    break;
+                }
+                $stmt = $pdo->prepare("SELECT image_path FROM watches WHERE id = ?");
+                $stmt->execute([$id]);
+                $old = $stmt->fetchColumn();
+                if ($old && file_exists('../' . $old)) {
+                    unlink('../' . $old);
+                }
+                $stmt = $pdo->prepare("UPDATE watches SET image_path = ? WHERE id = ?");
+                $stmt->execute(["uploads/$filename", $id]);
+                echo json_encode(['success' => true, 'image_path' => "uploads/$filename"]);
+            } else {
+                if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Imagen requerida']);
+                    break;
+                }
+                $name = trim($_POST['name'] ?? '');
+                $gender = $_POST['gender'] ?? '';
+                $price = !empty($_POST['price']) ? floatval($_POST['price']) : null;
+                $description = trim($_POST['description'] ?? '');
+                if (!$name || !$gender) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Nombre y género obligatorios']);
+                    break;
+                }
+                $file = $_FILES['image'];
+                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+                if (!in_array(strtolower($ext), $allowed)) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Formato no permitido']);
+                    break;
+                }
+                $filename = uniqid() . '.' . $ext;
+                $uploadPath = '../uploads/' . $filename;
+                if (!move_uploaded_file($file['tmp_name'], $uploadPath)) {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Error al guardar imagen']);
+                    break;
+                }
+                $stmt = $pdo->prepare("INSERT INTO watches (name, gender, price, description, image_path) VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([$name, $gender, $price, $description, "uploads/$filename"]);
+                $newId = $pdo->lastInsertId();
+                echo json_encode(['success' => true, 'id' => $newId, 'image_path' => "uploads/$filename"]);
+            }
+            break;
+
+        case 'DELETE':
+            if (!checkAuth()) {
+                http_response_code(401);
+                echo json_encode(['error' => 'Acceso denegado']);
+                break;
+            }
+            if (!$id) {
+                http_response_code(400);
+                echo json_encode(['error' => 'ID requerido']);
+                break;
+            }
+            $stmt = $pdo->prepare("SELECT image_path FROM watches WHERE id = ?");
+            $stmt->execute([$id]);
+            $imgPath = $stmt->fetchColumn();
+            if ($imgPath && file_exists('../' . $imgPath)) {
+                unlink('../' . $imgPath);
+            }
+            $stmt = $pdo->prepare("DELETE FROM watches WHERE id = ?");
+            $stmt->execute([$id]);
+            echo json_encode(['success' => true]);
+            break;
+
+        default:
+            http_response_code(405);
+            echo json_encode(['error' => 'Método no permitido']);
+            break;
+    }
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
+}
+?>
