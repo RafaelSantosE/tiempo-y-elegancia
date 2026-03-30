@@ -6,8 +6,12 @@
     <title>Tiempo y Elegancia | Relojería Exclusiva</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js"></script>
     <style>
-        /* ===== ESTILOS COMPLETOS (iguales a los originales) ===== */
+        /* ===== ESTILOS COMPLETOS ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -377,26 +381,153 @@
         }
         .password-error { color: #ff8888; margin-top: 0.5rem; font-size: 0.8rem; }
     </style>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js"></script>
 </head>
 <body>
 
-<!-- El resto del HTML (header, admin-panel, catalog, services, modals) se mantiene igual que en tu código original.
-     Para no repetir todo, asumiremos que ya lo tienes. La única parte que cambia es el script.
-     Por lo tanto, a continuación solo escribo el nuevo <script> que reemplaza la lógica anterior.
-     Asegúrate de que las estructuras HTML coincidan con las del script. -->
+<header class="header">
+    <div class="nav-container">
+        <div class="logo">
+            <h1>Tiempo y Elegancia</h1>
+            <p>Relojería de autor</p>
+        </div>
+        <div class="live-clock">
+            <canvas id="analogClockCanvas" width="60" height="60" class="clock-canvas"></canvas>
+            <div class="digital-time" id="digitalClock"></div>
+        </div>
+        <button class="admin-toggle" id="adminToggleBtn"><i class="fas fa-crown"></i> Administrar relojes</button>
+    </div>
+</header>
 
-<header class="header">...</header>
-<div class="admin-panel" id="adminPanel">...</div>
-<section class="catalog">...</section>
-<div class="services-section">...</div>
-<footer>...</footer>
-<div id="detailModal" class="modal">...</div>
-<div id="brokenImageModal" class="modal">...</div>
-<div id="authModal" class="modal">...</div>
+<div class="admin-panel" id="adminPanel">
+    <div class="admin-card">
+        <h3><i class="fas fa-images"></i> Subir múltiples imágenes</h3>
+        <form id="batchForm">
+            <div class="form-group">
+                <label>Categoría *</label>
+                <select id="batchGender" required>
+                    <option value="hombre">Hombre</option>
+                    <option value="mujer">Dama</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Seleccionar imágenes</label>
+                <input type="file" id="batchImages" accept="image/jpeg,image/png,image/webp" multiple>
+                <div id="batchPreview" class="image-preview-area"></div>
+            </div>
+            <button type="submit" class="btn-submit"><i class="fas fa-upload"></i> Subir todas</button>
+        </form>
+        <div class="info-note">
+            <i class="fas fa-info-circle"></i> Las imágenes se guardan en Firebase Storage y son visibles para todos.
+        </div>
+        <hr style="margin: 1.5rem 0; border-color: #4a4a46;">
+        <h3><i class="fas fa-plus-circle"></i> Subir un reloj con datos personalizados</h3>
+        <form id="singleForm">
+            <div class="form-group">
+                <label>Nombre del reloj *</label>
+                <input type="text" id="watchName" required placeholder="Ej: Cronógrafo Imperial">
+            </div>
+            <div class="form-group">
+                <label>Categoría *</label>
+                <select id="watchGender" required>
+                    <option value="hombre">Hombre</option>
+                    <option value="mujer">Dama</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Precio (USD) - opcional</label>
+                <input type="number" id="watchPrice" step="0.01" placeholder="Dejar vacío si no tiene precio">
+            </div>
+            <div class="form-group">
+                <label>Descripción breve</label>
+                <textarea id="watchDesc" rows="2" placeholder="Descripción del modelo"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Imagen del reloj *</label>
+                <input type="file" id="singleImage" accept="image/jpeg,image/png,image/webp">
+                <div id="singlePreview" class="image-preview-area"></div>
+            </div>
+            <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Guardar reloj</button>
+        </form>
+    </div>
+</div>
+
+<section class="catalog">
+    <div class="catalog-header" style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="font-size: 2.5rem; background: linear-gradient(135deg, #f5e7c8, #d4af37); background-clip: text; -webkit-background-clip: text; color: transparent;">Nuestra Colección</h2>
+        <div class="gold-line"></div>
+        <p>Desliza lateralmente para ver todos los modelos</p>
+    </div>
+    <div class="category-section" id="menSection">
+        <div class="category-header"><h2><i class="fas fa-mars"></i> Relojes para Hombre</h2><span class="count" id="menCount">0</span></div>
+        <div class="watches-scroll"><div id="menGrid" class="watches-row"></div></div>
+    </div>
+    <div class="category-section" id="womenSection">
+        <div class="category-header"><h2><i class="fas fa-venus"></i> Relojes para Dama</h2><span class="count" id="womenCount">0</span></div>
+        <div class="watches-scroll"><div id="womenGrid" class="watches-row"></div></div>
+    </div>
+</section>
+
+<div class="services-section">
+    <div class="services-card">
+        <div class="service-item">
+            <i class="fas fa-battery-full"></i>
+            <h4>Garantía en Pilas y Maquinaria</h4>
+            <p>3 meses de garantía en el funcionamiento de pilas y mecanismo interno.</p>
+        </div>
+        <div class="service-item">
+            <i class="fas fa-hand-sparkles"></i>
+            <h4>Ajuste de Manilla Gratis</h4>
+            <p>Si el reloj es comprado en <strong>Tiempo y Elegancia</strong>, el recorte de manilla es sin costo.</p>
+        </div>
+        <div class="service-item">
+            <i class="fas fa-clock"></i>
+            <h4>Servicio para otros relojes</h4>
+            <p>Si traes un reloj que no fue comprado aquí, el ajuste de manilla tiene un costo de <span class="price">$5,000 mil</span>.</p>
+        </div>
+    </div>
+    <div class="care-note">
+        <i class="fas fa-water" style="margin-right: 8px; color: #d4af37;"></i>
+        Nuestras piezas están diseñadas para acompañar tu estilo diario con resistencia a salpicaduras accidentales. Para preservar la integridad del mecanismo y sus acabados, recomendamos evitar la inmersión en agua y el contacto con agentes abrasivos. El desgaste natural por uso o exposición a químicos no está cubierto por la garantía.
+    </div>
+</div>
+
+<footer>
+    <p>Tiempo y Elegancia | Desde 2025 | La medida del buen gusto</p>
+    <div class="creator">✧ Creador: Rafael Santo Escoria ✧</div>
+</footer>
+
+<div id="detailModal" class="modal">
+    <div class="modal-detail">
+        <span class="close-modal" id="closeDetailModal">&times;</span>
+        <div class="modal-img"><img id="modalImg" src="" alt="Reloj"></div>
+        <div class="modal-info"><h3 id="modalName"></h3><p id="modalDesc"></p></div>
+    </div>
+</div>
+<div id="brokenImageModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeBrokenModal">&times;</span>
+        <h3><i class="fas fa-exclamation-triangle"></i> Imagen no disponible</h3>
+        <p id="brokenWatchName"></p>
+        <div class="modal-buttons">
+            <button class="modal-btn upload" id="brokenUploadBtn"><i class="fas fa-upload"></i> Subir nueva imagen</button>
+            <button class="modal-btn delete" id="brokenDeleteBtn"><i class="fas fa-trash"></i> Eliminar reloj</button>
+            <button class="modal-btn cancel" id="brokenCancelBtn">Cancelar</button>
+        </div>
+        <input type="file" id="brokenImageFile" accept="image/jpeg,image/png,image/webp" style="display: none;">
+    </div>
+</div>
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <h3><i class="fas fa-lock"></i> Acceso restringido</h3>
+        <p>Ingresa la contraseña para modificar el catálogo</p>
+        <input type="password" id="authPassword" class="password-input" placeholder="Contraseña" autocomplete="off">
+        <div id="authError" class="password-error"></div>
+        <div class="modal-buttons">
+            <button class="modal-btn upload" id="authSubmitBtn">Acceder</button>
+            <button class="modal-btn cancel" id="authCancelBtn">Cancelar</button>
+        </div>
+    </div>
+</div>
 
 <script>
     // ================== RELOJ ANÁLOGO ==================
@@ -476,8 +607,9 @@
     // ================== VARIABLES GLOBALES ==================
     const ADMIN_PASSWORD = "2024";
     let isAuthenticated = false;
-    let watches = []; // array local para renderizar
+    let watches = [];
 
+    // Elementos DOM
     const menGrid = document.getElementById('menGrid');
     const womenGrid = document.getElementById('womenGrid');
     const menCountSpan = document.getElementById('menCount');
@@ -508,7 +640,7 @@
     let authCallback = null;
     let currentBrokenWatch = null;
 
-    // ================== AUTENTICACIÓN (contraseña simple) ==================
+    // ================== AUTENTICACIÓN ==================
     function requestAuth(callback) {
         authPasswordInput.value = '';
         authErrorSpan.innerText = '';
@@ -535,7 +667,7 @@
     authPasswordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
 
     // ================== FUNCIONES DE FIREBASE ==================
-    // Cargar todos los relojes desde Realtime Database
+    // Cargar relojes desde Realtime Database
     function loadWatches() {
         const watchesRef = database.ref('watches');
         watchesRef.on('value', (snapshot) => {
@@ -547,6 +679,10 @@
                 }));
             } else {
                 watches = [];
+                // Si está vacío, insertar algunos datos de ejemplo
+                if (watches.length === 0) {
+                    addExampleWatches();
+                }
             }
             renderCatalog();
         }, (error) => {
@@ -555,7 +691,26 @@
         });
     }
 
-    // Subir imagen a Storage y obtener URL
+    // Agregar relojes de ejemplo (opcional)
+    async function addExampleWatches() {
+        const examples = [
+            { name: "Cronógrafo Imperial", gender: "hombre", imageUrl: "https://placehold.co/400x400/2a2a28/d4af37?text=Imperial", description: "Elegancia clásica con cronógrafo suizo." },
+            { name: "Elegance Moonphase", gender: "mujer", imageUrl: "https://placehold.co/400x400/2a2a28/d4af37?text=Moonphase", description: "Fase lunar en acero inoxidable." }
+        ];
+        for (let ex of examples) {
+            const newRef = database.ref('watches').push();
+            await newRef.set({
+                name: ex.name,
+                gender: ex.gender,
+                image_path: ex.imageUrl,
+                description: ex.description,
+                price: null,
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+            });
+        }
+    }
+
+    // Subir imagen a Storage y obtener URL pública
     async function uploadImage(file, watchId) {
         const storageRef = storage.ref();
         const imageRef = storageRef.child(`watches/${watchId}/${Date.now()}_${file.name}`);
@@ -564,9 +719,8 @@
         return downloadURL;
     }
 
-    // Agregar nuevo reloj (con imagen)
+    // Agregar un nuevo reloj (con imagen)
     async function addWatch(name, gender, price, description, imageFile) {
-        // Primero subir la imagen para obtener URL
         const tempId = Date.now().toString(); // ID temporal para la carpeta
         const imageUrl = await uploadImage(imageFile, tempId);
         const newWatch = {
@@ -584,20 +738,16 @@
 
     // Actualizar imagen de un reloj existente
     async function updateWatchImage(watchId, imageFile) {
-        // Eliminar imagen anterior (opcional: podríamos borrar la anterior de Storage)
-        // Subir nueva imagen
         const imageUrl = await uploadImage(imageFile, watchId);
         await database.ref(`watches/${watchId}`).update({ image_path: imageUrl });
     }
 
-    // Eliminar reloj (y su imagen de Storage)
+    // Eliminar reloj (y opcionalmente su imagen de Storage)
     async function deleteWatch(watchId) {
-        // Obtener la URL de la imagen para poder eliminarla
         const watchRef = database.ref(`watches/${watchId}`);
         const snapshot = await watchRef.once('value');
         const watch = snapshot.val();
-        if (watch && watch.image_path) {
-            // Intentar eliminar la imagen de Storage (opcional, puede fallar si la URL no es de nuestro bucket)
+        if (watch && watch.image_path && watch.image_path.includes('firebasestorage')) {
             try {
                 const imageRef = storage.refFromURL(watch.image_path);
                 await imageRef.delete();
@@ -639,6 +789,7 @@
         });
         container.innerHTML = html;
 
+        // Eventos de detalles
         container.querySelectorAll('.btn-detail').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -648,6 +799,7 @@
             });
         });
 
+        // Eventos de eliminar
         if (adminPanelDiv.classList.contains('active')) {
             container.querySelectorAll('.delete-watch').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
@@ -660,6 +812,7 @@
             });
         }
 
+        // Click en la tarjeta completa
         container.querySelectorAll('.watch-card').forEach(card => {
             card.addEventListener('click', (e) => {
                 if (e.target.classList.contains('btn-detail') || e.target.classList.contains('delete-watch')) return;
@@ -670,7 +823,7 @@
         });
     }
 
-    // Manejo de imagen rota (muestra placeholder y permite reparar)
+    // Manejo de imágenes rotas (placeholder y reparación)
     window.handleImageError = function(imgElement, watchId) {
         const watch = watches.find(w => w.id == watchId);
         if (!watch) return;
@@ -828,7 +981,7 @@
     });
     function toggleAdminPanel() {
         adminPanelDiv.classList.toggle('active');
-        renderCatalog();
+        renderCatalog(); // refresca botones eliminar
         adminToggleBtn.innerHTML = adminPanelDiv.classList.contains('active') ? '<i class="fas fa-eye"></i> Ocultar administración' : '<i class="fas fa-crown"></i> Administrar relojes';
     }
 
@@ -842,7 +995,7 @@
         });
     }
 
-    // Inicializar: cargar relojes desde Firebase
+    // Inicializar: cargar los relojes desde Firebase
     loadWatches();
 </script>
 </body>
